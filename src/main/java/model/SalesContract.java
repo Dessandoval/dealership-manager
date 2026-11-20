@@ -6,12 +6,12 @@ public class SalesContract extends Contract {
 
     private BigDecimal salesTaxAmount;
     private BigDecimal recordingFee;
-    private boolean isFinanced;
+    private boolean financed;
 
-    public SalesContract(BigDecimal salesTaxAmount, BigDecimal recordingFee, boolean isFinanced) {
+    public SalesContract(BigDecimal salesTaxAmount, BigDecimal recordingFee, boolean financed) {
         this.salesTaxAmount = salesTaxAmount;
         this.recordingFee = recordingFee;
-        this.isFinanced = isFinanced;
+        this.financed = financed;
     }
 
     public BigDecimal getSalesTaxAmount() {
@@ -31,16 +31,23 @@ public class SalesContract extends Contract {
     }
 
     public boolean isFinanced() {
-        return isFinanced;
+        return financed;
     }
 
     public void setFinanced(boolean financed) {
-        isFinanced = financed;
+        this.financed = financed;
     }
 
     @Override
     public BigDecimal getMonthlyPayment() {
-        return null;
+        if (!financed) {
+            return BigDecimal.ZERO;
+        }
+
+        if (getVehicleSold().getPrice().compareTo(new BigDecimal("10000")) >= 0) {
+            return LoanCalculator.calculateMonthlyPayment(getTotalPrice(),new BigDecimal("4.25"), 48);
+        }
+        return LoanCalculator.calculateMonthlyPayment(getTotalPrice(),new BigDecimal("5.25"), 24);
     }
 
     @Override
