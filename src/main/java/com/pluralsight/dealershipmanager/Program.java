@@ -1,11 +1,6 @@
-package com.pluralsight;
+package com.pluralsight.dealershipmanager;
 
-import model.SalesContract;
-import model.Vehicle;
-import ui.UserInterface;
-
-import java.math.BigDecimal;
-import java.time.LocalDate;
+import com.pluralsight.dealershipmanager.ui.UserInterface;
 
 public class Program {
     public static void main(String[] args) {

@@ -1,4 +1,4 @@
-package model;
+package com.pluralsight.dealershipmanager.model;
 
 
 import java.math.BigDecimal;
@@ -10,6 +10,13 @@ public abstract class Contract {
     private String customerName;
     private String customerEmail;
     private Vehicle vehicleSold;
+
+    public Contract(LocalDate contractDate, String customerName, String customerEmail, Vehicle vehicleSold) {
+        this.contractDate = contractDate;
+        this.customerName = customerName;
+        this.customerEmail = customerEmail;
+        this.vehicleSold = vehicleSold;
+    }
 
     public LocalDate getContractDate() {
         return contractDate;

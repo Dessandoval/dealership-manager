@@ -1,14 +1,17 @@
-package model;
+package com.pluralsight.dealershipmanager.model;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 public class SalesContract extends Contract {
 
+    private static final BigDecimal PRICE_THRESHOLD = new BigDecimal("10000");
     private BigDecimal salesTaxAmount;
     private BigDecimal recordingFee;
     private boolean financed;
 
-    public SalesContract(BigDecimal salesTaxAmount, BigDecimal recordingFee, boolean financed) {
+    public SalesContract(LocalDate contractDate, String customerName, String customerEmail, Vehicle vehicleSold, BigDecimal salesTaxAmount, BigDecimal recordingFee, boolean financed) {
+        super(contractDate, customerName, customerEmail, vehicleSold);
         this.salesTaxAmount = salesTaxAmount;
         this.recordingFee = recordingFee;
         this.financed = financed;
@@ -44,10 +47,11 @@ public class SalesContract extends Contract {
             return BigDecimal.ZERO;
         }
 
-        if (getVehicleSold().getPrice().compareTo(new BigDecimal("10000")) >= 0) {
-            return LoanCalculator.calculateMonthlyPayment(getTotalPrice(),new BigDecimal("4.25"), 48);
+        if (getVehicleSold().getPrice().compareTo(PRICE_THRESHOLD) >= 0) {
+            return LoanCalculator.calculateMonthlyPayment(getTotalPrice(),new BigDecimal(".0425"), 48);
+        }else {
+            return LoanCalculator.calculateMonthlyPayment(getTotalPrice(),new BigDecimal(".0525"), 24);
         }
-        return LoanCalculator.calculateMonthlyPayment(getTotalPrice(),new BigDecimal("5.25"), 24);
     }
 
     @Override
@@ -61,9 +65,10 @@ public class SalesContract extends Contract {
     }
 
     public BigDecimal getProcessingFee() {
-        if (getVehicleSold().getPrice().compareTo(new BigDecimal("10000")) < 0) {
+        if (getVehicleSold().getPrice().compareTo(PRICE_THRESHOLD) < 0) {
             return new BigDecimal("295.00");
+        }else {
+            return new BigDecimal("495.00");
         }
-        return new BigDecimal("495.00");
     }
 }
